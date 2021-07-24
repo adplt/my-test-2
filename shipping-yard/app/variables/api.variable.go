@@ -1,0 +1,3 @@
+package variables
+
+const ()
