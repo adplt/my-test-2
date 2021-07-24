@@ -302,6 +302,9 @@ var doc = `{
                     "type": "string",
                     "example": "2021-07-24"
                 },
+                "differences": {
+                    "type": "integer"
+                },
                 "max": {
                     "type": "string",
                     "example": "55"

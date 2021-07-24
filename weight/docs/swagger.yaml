@@ -100,6 +100,8 @@ definitions:
       date:
         example: "2021-07-24"
         type: string
+      differences:
+        type: integer
       max:
         example: "55"
         type: string
