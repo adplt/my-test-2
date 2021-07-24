@@ -10,6 +10,8 @@ require (
 	github.com/go-openapi/spec v0.20.3 // indirect
 	github.com/go-openapi/swag v0.19.15 // indirect
 	github.com/go-redis/redis/v8 v8.7.1
+	github.com/google/uuid v1.2.0
+	github.com/imdario/mergo v0.3.12
 	github.com/jackc/pgproto3/v2 v2.0.7 // indirect
 	github.com/jackc/pgx/v4 v4.11.0 // indirect
 	github.com/joho/godotenv v1.3.0

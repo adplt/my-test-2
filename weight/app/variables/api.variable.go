@@ -1,3 +1,5 @@
 package variables
 
-const ()
+const (
+	WEIGHT = "weights"
+)
