@@ -8,7 +8,7 @@ type AddWeight struct {
 }
 
 type GetWeight struct {
-	Date           string `json:"date,omitempty" swaggertype:"string" example:"2021-07-24"`
+	Date           string `form:"date" json:"date,omitempty" swaggertype:"string" example:"2021-07-24"`
 	WeightRecordId string `json:"weightRecordId,omitempty" swaggertype:"string" example:"0a7df903-6253-414f-9ff4-2a70bd7fdb04"`
 }
 

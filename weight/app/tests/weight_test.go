@@ -220,6 +220,7 @@ func TestGetWeight(t *testing.T) {
 			if err != nil {
 				configs.Throw(err)
 			}
+			weightJson, err := json.Marshal(weight)
 			if len(weight) == 0 {
 				configs.Throw(errors.New("Response not found"))
 			}
@@ -268,7 +269,7 @@ func TestGetWeightById(t *testing.T) {
 		Try: func() {
 			/* Set the input */
 			var (
-				payload structs.ResponseCommonArray
+				payload structs.ResponseCommonObject
 			)
 			/* Call the API & Check API Status */
 			res, errRes := testutils.GetWeightByIdAPI(weightRecordId)
@@ -281,7 +282,7 @@ func TestGetWeightById(t *testing.T) {
 			}
 			reader := strings.NewReader(string(body))
 			_ = json.NewDecoder(reader).Decode(&payload)
-			if len(payload.Data) == 0 {
+			if payload.Data == nil {
 				configs.Throw(errors.New("Main API Response Failed: " + fmt.Sprintf("%v", payload.Message) + " - " + fmt.Sprintf("%v", payload.Error)))
 			}
 			/* Check the payload */
@@ -299,8 +300,14 @@ func TestGetWeightById(t *testing.T) {
 			if weight.WeightRecordId.String() != weightRecordId {
 				configs.Throw(errors.New("Wrong weight record ID"))
 			}
-			if weight.Date[:10] != "" {
+			if weight.Date[:10] == "" {
 				configs.Throw(errors.New("Wrong date response"))
+			}
+			if weight.Max == 0 {
+				configs.Throw(errors.New("Wrong max response"))
+			}
+			if weight.Min == 0 {
+				configs.Throw(errors.New("Wrong min response"))
 			}
 			if weight.StatusId != variables.ACTIVE_STATUS {
 				configs.Throw(errors.New("Status is not active"))
