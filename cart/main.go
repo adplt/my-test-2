@@ -1,23 +1,17 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
-	"os"
 	configs "project/app/configs"
+	functions "project/app/functions"
+	structs "project/app/structs"
 )
 
 func main() {
 	configs.Block{
 		Try: func() {
-			var (
-				input string
-			)
-			scanner := bufio.NewScanner(os.Stdin)
-			if scanner.Scan() {
-				input = scanner.Text()
-				fmt.Printf("Input was: %s\n", input)
-			}
+			carts := []*structs.Cart{}
+			functions.Dashboart(carts)
 		},
 		Catch: func(e error) {
 			fmt.Println(e)
