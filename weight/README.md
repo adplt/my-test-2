@@ -41,6 +41,9 @@ then you can go to open web application by: `http://localhost:[set up port]/`
 
     go build
 
+
+
+
 # REST API
 
 The REST API to the example app is described below. For this one, there is a swagger url that explain all the API for this microservices. The swagger path is: `[url]/swagger/index.html`. To open swagger, make sure that .env property properly (sync with current env do you use):
