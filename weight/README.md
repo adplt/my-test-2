@@ -23,7 +23,7 @@ Note:
     - Test: `test`
     - Production: `prod`
 
-## Install
+## Install / Sync Depencies
 
     go mod tidy
 
