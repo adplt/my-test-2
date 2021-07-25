@@ -7,8 +7,8 @@ import (
 type TxWeightRecord struct {
 	WeightRecordId uuid.UUID `json:"weight_record_id,omitempty" swaggertype:"string" example:"ddccc2ad-4ebe-4b59-92b1-8417d5e5a0cf"`
 	Date           string    `json:"date,omitempty" swaggertype:"string" example:"2021-07-24"`
-	Max            int64     `json:"max,omitempty" swaggertype:"string" example:"55"`
-	Min            string    `json:"min,omitempty" swaggertype:"string" example:"50"`
+	Max            int       `json:"max,omitempty" swaggertype:"string" example:"55"`
+	Min            int       `json:"min,omitempty" swaggertype:"string" example:"50"`
 	Differences    int       `gorm:"column:differences" json:"differences,omitempty"`
 	StatusId       string    `json:"status_id,omitempty" swaggertype:"string" example:"1"`
 	CreatedBy      string    `json:"created_by,omitempty" swaggertype:"string" example:"DBeaver"`

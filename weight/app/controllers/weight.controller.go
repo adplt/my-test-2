@@ -97,6 +97,8 @@ func UpdateWeight(c *gin.Context) {
 				ModifiedFrom: request.Source,
 			}, "weight_record_id = ? AND status_id = ?", weightRecordId, variables.ACTIVE_STATUS)
 
+			weightRecord.WeightRecordId = uuid.MustParse(weightRecordId)
+
 			c.AbortWithStatusJSON(200, gin.H{
 				"status":  "SUCCESS",
 				"message": "Update weight successfully",
