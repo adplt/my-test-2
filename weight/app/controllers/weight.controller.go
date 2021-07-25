@@ -117,8 +117,8 @@ func UpdateWeight(c *gin.Context) {
 }
 
 // GetWeight function
-// @Summary API for Add Weight
-// @Description Add Weight API
+// @Summary API for Get Weight
+// @Description Get Weight API
 // @Param date query string false "Example: 2021-04-01"
 // @Accept json
 // @Produce json
@@ -159,6 +159,48 @@ func GetWeight(c *gin.Context) {
 				"status":  "SUCCESS",
 				"message": "Get weight successfully",
 				"data":    weightRecords,
+			})
+		},
+		Catch: func(e error) {
+			c.AbortWithStatusJSON(500, gin.H{
+				"status":  "FAILED",
+				"message": e.Error(),
+				"data":    nil,
+			})
+			configs.FancyHandleError(e)
+		},
+	}.Do()
+}
+
+// GetWeightById function
+// @Summary API for Get Weight by ID
+// @Description Get Weight by ID API
+// @Param weightRecordId path string true "Example: 6888dd2d-325d-477d-9ec4-d3491c0255ba"
+// @Accept json
+// @Produce json
+// @Success 200 {object} structs.ResponseGetWeightById
+// @Failure 400 {object} structs.ResponseError400
+// @Failure 500 {object} structs.ResponseError500
+// @Router /api/v1/weights [get]
+func GetWeightById(c *gin.Context) {
+	configs.Block{
+		Try: func() {
+			var (
+				request structs.GetWeight
+			)
+
+			weightRecordId := c.Param("weightRecordId")
+			request.WeightRecordId = weightRecordId
+
+			weightRecord := queries.TxWeightRecordFindByPk([]string{
+				"*",
+				"max - min AS differences",
+			}, weightRecordId)
+
+			c.AbortWithStatusJSON(200, gin.H{
+				"status":  "SUCCESS",
+				"message": "Get weight by ID successfully",
+				"data":    weightRecord,
 			})
 		},
 		Catch: func(e error) {

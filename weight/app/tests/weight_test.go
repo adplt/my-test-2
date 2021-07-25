@@ -262,3 +262,76 @@ func TestGetWeight(t *testing.T) {
 		},
 	}.Do()
 }
+
+func TestGetWeightById(t *testing.T) {
+	configs.Block{
+		Try: func() {
+			/* Set the input */
+			var (
+				payload structs.ResponseCommonArray
+			)
+			/* Call the API & Check API Status */
+			res, errRes := testutils.GetWeightByIdAPI(weightRecordId)
+			if errRes != nil {
+				configs.Throw(errors.New("Main API Error: " + errRes.Message))
+			}
+			body, err := ioutil.ReadAll(res.Body)
+			if err != nil {
+				configs.Throw(err)
+			}
+			reader := strings.NewReader(string(body))
+			_ = json.NewDecoder(reader).Decode(&payload)
+			if len(payload.Data) == 0 {
+				configs.Throw(errors.New("Main API Response Failed: " + fmt.Sprintf("%v", payload.Message) + " - " + fmt.Sprintf("%v", payload.Error)))
+			}
+			/* Check the payload */
+			var (
+				weight *models.TxWeightRecord
+			)
+			dataJson, err := json.Marshal(payload.Data)
+			if err != nil {
+				configs.Throw(err)
+			}
+			err = json.Unmarshal(dataJson, &weight)
+			if err != nil {
+				configs.Throw(err)
+			}
+			if weight.WeightRecordId.String() != weightRecordId {
+				configs.Throw(errors.New("Wrong weight record ID"))
+			}
+			if weight.Date[:10] != "" {
+				configs.Throw(errors.New("Wrong date response"))
+			}
+			if weight.StatusId != variables.ACTIVE_STATUS {
+				configs.Throw(errors.New("Status is not active"))
+			}
+			if weight.CreatedBy != userId {
+				configs.Throw(errors.New("Wrong created by"))
+			}
+			if weight.CreatedDate == "" {
+				configs.Throw(errors.New("Wrong created name"))
+			}
+			if weight.CreatedName != userName {
+				configs.Throw(errors.New("Wrong created name"))
+			}
+			if weight.CreatedFrom != source {
+				configs.Throw(errors.New("Wrong created from"))
+			}
+			if weight.ModifiedBy != userId {
+				configs.Throw(errors.New("Wrong modified by"))
+			}
+			if weight.ModifiedDate == "" {
+				configs.Throw(errors.New("Wrong modified name"))
+			}
+			if weight.ModifiedName != userName {
+				configs.Throw(errors.New("Wrong modified name"))
+			}
+			if weight.ModifiedFrom != source {
+				configs.Throw(errors.New("Wrong modified from"))
+			}
+		},
+		Catch: func(e error) {
+			t.Fatalf("Fatal: %v", e)
+		},
+	}.Do()
+}

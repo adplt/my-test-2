@@ -20,3 +20,10 @@ type ResponseGetWeight struct {
 	Message string           `json:"message" swaggertype:"string" example:"Get weight successfully"`
 	Status  string           `json:"status" swaggertype:"string" example:"SUCCESS"`
 }
+
+// ResponseGetWeightById struct
+type ResponseGetWeightById struct {
+	Data    TxWeightRecord `json:"data"`
+	Message string         `json:"message" swaggertype:"string" example:"Get weight successfully"`
+	Status  string         `json:"status" swaggertype:"string" example:"SUCCESS"`
+}

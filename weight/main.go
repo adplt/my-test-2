@@ -1,7 +1,6 @@
 package main
 
 import (
-	"net/http"
 	"os"
 	configs "project/app/configs"
 	variables "project/app/variables"
@@ -36,25 +35,19 @@ func main() {
 	os.Setenv("ENV", "prod")
 	r.Use(middlewares.CORS())
 	r.Use(middlewares.JSONLogMiddleware())
-	r.GET("/", func(c *gin.Context) {
-		c.HTML(
-			http.StatusOK,
-			"index.html",
-			gin.H{
-				"title": "Home Page",
-			},
-		)
-
-	})
+	r.GET("/"+variables.WEIGHT+"/:weightRecordId.html", middlewares.FillWeightUI())
+	r.GET("/", middlewares.HomeUI())
+	r.POST("/", middlewares.SubmitWeightUI())
 	if strings.ToUpper(configs.Env.SwaggerAllow) == "TRUE" {
 		r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	}
 	v1 := r.Group(variables.API_VERSION)
 	{
 		v1weight := v1.Group(variables.WEIGHT)
+		v1weight.GET("/:weightRecordId/", middlewares.GetWeightById, controllers.GetWeightById)
 		v1weight.GET("/", middlewares.GetWeight, controllers.GetWeight)
 		v1weight.POST("/", middlewares.AddWeight, controllers.AddWeight)
-		v1weight.PUT("/:weightRecordId", middlewares.UpdateWeight, controllers.UpdateWeight)
+		v1weight.PUT("/:weightRecordId/", middlewares.UpdateWeight, controllers.UpdateWeight)
 	}
 
 	r.Run(":" + configs.Env.AppPort)

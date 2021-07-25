@@ -27,6 +27,7 @@ func ServerTest() *httptest.Server {
 	v1 := r.Group(variables.API_VERSION)
 	{
 		v1weight := v1.Group(variables.WEIGHT)
+		v1weight.GET("/:weightRecordId", middlewares.GetWeightById, controllers.GetWeightById)
 		v1weight.GET("/", middlewares.GetWeight, controllers.GetWeight)
 		v1weight.POST("/", middlewares.AddWeight, controllers.AddWeight)
 		v1weight.PUT("/:weightRecordId", middlewares.UpdateWeight, controllers.UpdateWeight)

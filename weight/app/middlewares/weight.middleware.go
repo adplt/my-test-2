@@ -88,3 +88,29 @@ func GetWeight(c *gin.Context) {
 		},
 	}.Do()
 }
+
+// GetWeightById function
+func GetWeightById(c *gin.Context) {
+	configs.Block{
+		Try: func() {
+			var request structs.GetWeight
+
+			weightRecordId := c.Param("weightRecordId")
+			request.WeightRecordId = weightRecordId
+
+			if err := v.Struct(request); err != nil {
+				configs.Throw(err)
+			}
+
+			c.Next()
+		},
+		Catch: func(e error) {
+			c.AbortWithStatusJSON(400, gin.H{
+				"status":  "FAILED",
+				"message": e.Error(),
+				"data":    nil,
+			})
+			configs.FancyHandleError(e)
+		},
+	}.Do()
+}

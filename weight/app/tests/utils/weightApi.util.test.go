@@ -14,6 +14,13 @@ func GetWeightAPI(query string) (*http.Response, *httputils.CommonJSON) {
 	return httputils.GET(server.URL+"/"+variables.API_VERSION+"/"+variables.WEIGHT, query)
 }
 
+// GetWeightByIdAPI function
+func GetWeightByIdAPI(id string) (*http.Response, *httputils.CommonJSON) {
+	server := ServerTest()
+	defer server.Close()
+	return httputils.GET(server.URL+"/"+variables.API_VERSION+"/"+variables.WEIGHT, "/"+id)
+}
+
 // AddWeightAPI function
 func AddWeightAPI(payload map[string]interface{}) (*http.Response, *httputils.CommonJSON) {
 	server := ServerTest()

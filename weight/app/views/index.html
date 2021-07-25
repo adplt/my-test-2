@@ -1,37 +1,44 @@
 <!--Embed the header.html template at this location-->
-{{ template "header.html" .}}
+{{ template "header.html" . }}
 
 <div class="main-block">
-    <h1>Registration</h1>
-    <form action="/">
+    <h1>Weight Application</h1>
+    <form action="/" method="POST" name="addWeight">
       <hr>
-      <div class="account-type">
-        <input type="radio" value="none" id="radioOne" name="account" checked/>
-        <label for="radioOne" class="radio">Personal</label>
-        <input type="radio" value="none" id="radioTwo" name="account" />
-        <label for="radioTwo" class="radio">Company</label>
-      </div>
-      <hr>
+      <input type="hidden" id="weightRecordId" name="weightRecordId" value="{{ .weightRecordId }}">
       <label id="icon" for="name"><i class="fas fa-envelope"></i></label>
-      <input type="text" name="name" id="name" placeholder="Email" required/>
+      <input type="date" name="date" id="date" placeholder="Date" value={{ .date }} required/>
+      <br/>
+      <br/>
       <label id="icon" for="name"><i class="fas fa-user"></i></label>
-      <input type="text" name="name" id="name" placeholder="Name" required/>
-      <label id="icon" for="name"><i class="fas fa-unlock-alt"></i></label>
-      <input type="password" name="name" id="name" placeholder="Password" required/>
-      <hr>
-      <div class="gender">
-        <input type="radio" value="none" id="male" name="gender" checked/>
-        <label for="male" class="radio">Male</label>
-        <input type="radio" value="none" id="female" name="gender" />
-        <label for="female" class="radio">Female</label>
-      </div>
+      <input type="number" name="max" id="max" placeholder="Max" value={{ .max }} required/>
+      <br/>
+      <br/>
+      <label id="icon" for="name"><i class="fas fa-user"></i></label>
+      <input type="number" name="min" id="min" placeholder="Min" value={{ .min }} required/>
+      <br/>
+      <br/>
       <hr>
       <div class="btn-block">
-        <p>By clicking Register, you agree on our <a href="https://www.w3docs.com/privacy-policy">Privacy Policy for W3Docs</a>.</p>
         <button type="submit" href="/">Submit</button>
       </div>
     </form>
+    <ul>
+      {{ range .data }}
+        <li style="margin-right: 20px;">
+          <a href="/weights/{{ .WeightRecordId }}">
+            <h4>Date: {{.Date}}</h4>
+          </a>
+          <p name="WeightRecordId">ID: {{ .WeightRecordId }}</p>
+          <p name>Max: {{ .Max }}</p>
+          <p>Min: {{ .Min }}</p>
+          <p>Differences: {{ .Differences }}</p>
+        </li>
+      {{end}}
+    </ul>    
   </div>
 
+ 
+
 <!--Embed the footer.html template at this location-->
-{{ template "footer.html" .}}
+{{ template "footer.html" . }}
