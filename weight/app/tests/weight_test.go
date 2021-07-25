@@ -20,7 +20,7 @@ import (
 	"github.com/imdario/mergo"
 )
 
-/* e2e test */
+/* e2e testing */
 
 var (
 	weightRecordId string

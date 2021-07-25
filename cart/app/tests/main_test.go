@@ -2,6 +2,7 @@ package tests
 
 import (
 	"errors"
+	"fmt"
 	configs "project/app/configs"
 	functions "project/app/functions"
 	structs "project/app/structs"
@@ -9,9 +10,12 @@ import (
 	"testing"
 )
 
+/* unit testing */
+
 func TestAddProductScenario1(t *testing.T) {
 	configs.Block{
 		Try: func() {
+			fmt.Println("Add Product - Scenario 1 [Positive]: Add product from existing list -> expect: update qty only on the existing item from the list")
 			var (
 				inputName       = "nangka"
 				inputQty  int64 = 1
@@ -54,6 +58,7 @@ func TestAddProductScenario1(t *testing.T) {
 func TestAddProductScenario2(t *testing.T) {
 	configs.Block{
 		Try: func() {
+			fmt.Println("Add Product - Scenario 2 [Positive]: Add product that doesn't exist on the list -> expect: add new item to the list")
 			var (
 				inputName       = "jambu"
 				inputQty  int64 = 2
@@ -89,6 +94,7 @@ func TestAddProductScenario2(t *testing.T) {
 func TestAddProductScenario3(t *testing.T) {
 	configs.Block{
 		Try: func() {
+			fmt.Println("Add Product - Scenario 3 [Negative]: Add product that product name is empty -> expect: nothing change on the list")
 			var (
 				inputName = ""
 			)
@@ -115,6 +121,7 @@ func TestAddProductScenario3(t *testing.T) {
 func TestDeleteProductScenario1(t *testing.T) {
 	configs.Block{
 		Try: func() {
+			fmt.Println("Delete Product - Scenario 1 [Positive]: Remove product from the list that the qty is more than 1 -> expect: the item still be exist but the qty is reduced")
 			var (
 				inputName = "nangka"
 			)
@@ -160,6 +167,7 @@ func TestDeleteProductScenario1(t *testing.T) {
 func TestDeleteProductScenario2(t *testing.T) {
 	configs.Block{
 		Try: func() {
+			fmt.Println("Delete Product - Scenario 2 [Positive]: Remove product from the list that the qty is the only 1 -> expect: the item should be removed from the list")
 			var (
 				inputName = "nangka"
 			)
@@ -186,6 +194,7 @@ func TestDeleteProductScenario2(t *testing.T) {
 func TestDeleteProductScenario3(t *testing.T) {
 	configs.Block{
 		Try: func() {
+			fmt.Println("Delete Product - Scenario 3 [Negative]: Remove product that doesn't exist on the list -> expect: nothing change on the list")
 			var (
 				inputName = "nangka"
 			)
@@ -209,9 +218,10 @@ func TestDeleteProductScenario3(t *testing.T) {
 	}.Do()
 }
 
-func TestShowProduct(t *testing.T) {
+func TestShowProductScenario1(t *testing.T) {
 	configs.Block{
 		Try: func() {
+			fmt.Println("Show Product - Scenario 1 [Positive]: Show existing item on the list -> expect: the item are exist on the list")
 			carts := []*structs.Cart{
 				{
 					Name: "nangka",
@@ -223,6 +233,25 @@ func TestShowProduct(t *testing.T) {
 				configs.Throw(errors.New("The card is not exist"))
 			}
 			if len(carts) <= 0 {
+				configs.Throw(errors.New("Wrong cart length"))
+			}
+		},
+		Catch: func(e error) {
+			t.Fatalf("Fatal: %v", e)
+		},
+	}.Do()
+}
+
+func TestShowProductScenario2(t *testing.T) {
+	configs.Block{
+		Try: func() {
+			fmt.Println("Show Product - Scenario 2 [Positive]: Show empty list -> expect: the item aren't exist on the list")
+			carts := []*structs.Cart{}
+			carts, exist := functions.ShowProduct(carts)
+			if exist {
+				configs.Throw(errors.New("The list is not empty"))
+			}
+			if len(carts) != 0 {
 				configs.Throw(errors.New("Wrong cart length"))
 			}
 		},
