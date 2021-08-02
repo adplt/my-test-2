@@ -6,7 +6,7 @@ The entire application is contained within the `app` folder.
 
 `main.go` is an index of the project.
 
-`.env.example` is the property for `.env` file. All configuration using `.env`. In this file, there is 3 major env in one file (dev, test, and prod). For set which env do you use, run this one for the first time: ``
+`.env.example` is the property for `.env` file. All configuration using `.env` file. In this file, there are 3 major environtment in one file (dev, test, and prod). For set which env do you use, run this one for the first time: ``
 
 ## Mac
 
@@ -51,12 +51,12 @@ The REST API to the example app is described below. For this one, there is a swa
 ## Development
 
     DEV__SWAGGER__ALLOW=TRUE
-    DEV__SWAGGER__URL=[back end url]
+    DEV__SWAGGER__URL=[back end API URL]
 
 ## Test
     TEST__SWAGGER__ALLOW=TRUE
-    TEST__SWAGGER__URL=[back end url]
+    TEST__SWAGGER__URL=[back end API URL]
 
 ## Production
     PROD__SWAGGER__ALLOW=TRUE
-    PROD__SWAGGER__URL=[back end url]
+    PROD__SWAGGER__URL=[back end API URL]
