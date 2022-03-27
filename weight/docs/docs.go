@@ -19,71 +19,50 @@ var doc = `{
         "description": "{{.Description}}",
         "title": "{{.Title}}",
         "contact": {},
-        "license": {
-            "name": "Apache 2.0",
-            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
-        },
         "version": "{{.Version}}"
     },
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/api/v1/weights": {
+        "/": {
             "get": {
-                "description": "Add Weight API",
-                "consumes": [
-                    "application/json"
-                ],
+                "description": "Request for get data",
                 "produces": [
                     "application/json"
                 ],
-                "summary": "API for Add Weight",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Example: 2021-04-01",
-                        "name": "date",
-                        "in": "query"
-                    }
-                ],
+                "summary": "Request for get data",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/structs.ResponseGetWeight"
+                            "$ref": "#/definitions/models.JSON"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/structs.ResponseError400"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/structs.ResponseError500"
+                            "$ref": "#/definitions/models.JSON"
                         }
                     }
                 }
             },
             "post": {
-                "description": "Add Weight API",
+                "description": "Request for get info scif by gcn",
                 "consumes": [
                     "application/json"
                 ],
                 "produces": [
                     "application/json"
                 ],
-                "summary": "API for Add Weight",
+                "summary": "Request for get info scif by gcn",
                 "parameters": [
                     {
-                        "description": "Body of Weight",
-                        "name": "Body",
+                        "description": "get request from context middleware",
+                        "name": "payload",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/structs.AddWeight"
+                            "$ref": "#/definitions/models.GetScifByGCN"
                         }
                     }
                 ],
@@ -91,69 +70,13 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/structs.ResponseAddWeight"
+                            "$ref": "#/definitions/models.JSON"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/structs.ResponseError400"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/structs.ResponseError500"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/v1/weights/{weightRecordId}": {
-            "put": {
-                "description": "Update Weight API",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "summary": "API for Update Weight",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Example: 419b68d8-fe6f-4025-b8e5-dcb572f74b27",
-                        "name": "weightRecordId",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "Body of Weight",
-                        "name": "Body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/structs.UpdateWeight"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/structs.ResponseUpdateWeight"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/structs.ResponseError400"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/structs.ResponseError500"
+                            "$ref": "#/definitions/models.JSON"
                         }
                     }
                 }
@@ -161,213 +84,28 @@ var doc = `{
         }
     },
     "definitions": {
-        "structs.AddWeight": {
+        "models.GetScifByGCN": {
             "type": "object",
-            "required": [
-                "date",
-                "max",
-                "min",
-                "userId"
-            ],
             "properties": {
-                "date": {
-                    "type": "string",
-                    "example": "2021-07-24"
-                },
-                "max": {
-                    "type": "number",
-                    "example": 55
-                },
-                "min": {
-                    "type": "number",
-                    "example": 50
-                },
-                "source": {
-                    "type": "string",
-                    "example": "Postman"
-                },
-                "userId": {
-                    "type": "string",
-                    "example": "Postman"
-                },
-                "userName": {
-                    "type": "string",
-                    "example": "Postman"
+                "gcn": {
+                    "type": "string"
                 }
             }
         },
-        "structs.ResponseAddWeight": {
+        "models.JSON": {
             "type": "object",
             "properties": {
-                "data": {
-                    "$ref": "#/definitions/structs.TxWeightRecord"
-                },
                 "message": {
-                    "type": "string",
-                    "example": "Add weight successfully"
+                    "type": "string"
                 },
-                "status": {
-                    "type": "string",
-                    "example": "SUCCESS"
-                }
-            }
-        },
-        "structs.ResponseError400": {
-            "type": "object",
-            "properties": {
-                "data": {
+                "messagecode": {
+                    "type": "string"
+                },
+                "results": {
                     "type": "object"
                 },
-                "message": {
-                    "type": "string",
-                    "example": "Key: 'GetRestaurantTrx.RestName' Error:Field validation for 'RestName' failed on the 'required' tag"
-                },
-                "status": {
-                    "type": "string",
-                    "example": "FAILED"
-                }
-            }
-        },
-        "structs.ResponseError500": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "type": "object"
-                },
-                "message": {
-                    "type": "string",
-                    "example": "Restaurant not found"
-                },
-                "status": {
-                    "type": "string",
-                    "example": "FAILED"
-                }
-            }
-        },
-        "structs.ResponseGetWeight": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/structs.TxWeightRecord"
-                    }
-                },
-                "message": {
-                    "type": "string",
-                    "example": "Get weight successfully"
-                },
-                "status": {
-                    "type": "string",
-                    "example": "SUCCESS"
-                }
-            }
-        },
-        "structs.ResponseUpdateWeight": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "$ref": "#/definitions/structs.TxWeightRecord"
-                },
-                "message": {
-                    "type": "string",
-                    "example": "Update weight successfully"
-                },
-                "status": {
-                    "type": "string",
-                    "example": "SUCCESS"
-                }
-            }
-        },
-        "structs.TxWeightRecord": {
-            "type": "object",
-            "properties": {
-                "created_by": {
-                    "type": "string",
-                    "example": "DBeaver"
-                },
-                "created_date": {
-                    "type": "string",
-                    "example": "2021-07-20 09:34:12"
-                },
-                "created_from": {
-                    "type": "string",
-                    "example": "DBeaver"
-                },
-                "created_name": {
-                    "type": "string",
-                    "example": "DBeaver"
-                },
-                "date": {
-                    "type": "string",
-                    "example": "2021-07-24"
-                },
-                "differences": {
-                    "type": "integer"
-                },
-                "max": {
-                    "type": "string",
-                    "example": "55"
-                },
-                "min": {
-                    "type": "string",
-                    "example": "50"
-                },
-                "modified_by": {
-                    "type": "string",
-                    "example": "DBeaver"
-                },
-                "modified_date": {
-                    "type": "string",
-                    "example": "2021-07-20 09:34:12"
-                },
-                "modified_from": {
-                    "type": "string",
-                    "example": "DBeaver"
-                },
-                "modified_name": {
-                    "type": "string",
-                    "example": "DBeaver"
-                },
-                "status_id": {
-                    "type": "string",
-                    "example": "1"
-                },
-                "weight_record_id": {
-                    "type": "string",
-                    "example": "ddccc2ad-4ebe-4b59-92b1-8417d5e5a0cf"
-                }
-            }
-        },
-        "structs.UpdateWeight": {
-            "type": "object",
-            "required": [
-                "userId"
-            ],
-            "properties": {
-                "date": {
-                    "type": "string",
-                    "example": "2021-07-24"
-                },
-                "max": {
-                    "type": "number",
-                    "example": 55
-                },
-                "min": {
-                    "type": "number",
-                    "example": 50
-                },
-                "source": {
-                    "type": "string",
-                    "example": "Postman"
-                },
-                "userId": {
-                    "type": "string",
-                    "example": "Postman"
-                },
-                "userName": {
-                    "type": "string",
-                    "example": "Postman"
+                "success": {
+                    "type": "boolean"
                 }
             }
         }
@@ -385,12 +123,12 @@ type swaggerInfo struct {
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = swaggerInfo{
-	Version:     "1.0",
+	Version:     "0.0.1",
 	Host:        "",
-	BasePath:    "",
+	BasePath:    "/project",
 	Schemes:     []string{},
-	Title:       "Weight",
-	Description: "Example API for Weight",
+	Title:       "BE Main Template",
+	Description: "This is a services for get motion saving point.",
 }
 
 type s struct{}

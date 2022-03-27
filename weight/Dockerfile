@@ -6,7 +6,17 @@ FROM golang:latest as builder
 # Set the Current Working Directory inside the container
 WORKDIR /app
 
+# Set git config credential
+ARG USER_GITLAB
+ENV USER_GITLAB=$USER_GITLAB
+ARG TOKEN_GITLAB
+ENV TOKEN_GITLAB=$TOKEN_GITLAB
+
+# Run credential here
+RUN git config --global url."https://${USER_GITLAB}:${TOKEN_GITLAB}@gitlab.mncbank.co.id".insteadOf "https://gitlab.mncbank.co.id"
+
 # Copy go mod and sum files
+ENV GOSUMDB=off
 COPY go.mod go.sum ./
 
 # Download all dependencies. Dependencies will be cached if the go.mod and go.sum files are not changed

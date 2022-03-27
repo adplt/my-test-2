@@ -1,62 +1,36 @@
-# Weight Application
+# BE MAIN TEMPLATE
 
-This is a bare-bones example of a Weight application providing a REST API.
+![Architecture Clean Code](https://blog.cleancoder.com/uncle-bob/images/2012-08-13-the-clean-architecture/CleanArchitecture.jpg)
 
-The entire application is contained within the `app` folder.
+First Step
+ - create main.go
+ - create .gitignore
+ - create go module 
 
-`main.go` is an index of the project.
+    `go mod init <project-name>`
 
-`.env.example` is the property for `.env` file. All configuration using `.env` file. In this file, there are 3 major environtment in one file (dev, test, and prod). For set which env do you use, run this one for the first time: ``
+### Ada 6 bagian kode di dalam design ini:
 
-## Mac
+## 1. Model
+Model dapat berisikan objek data dengan metode atau hanya berupa kumpulan struktur data.
 
-    export ENV=dev
+## 2. Repository
+Repository berisikan perintah untuk query ke database.
 
-## Windows
+## 3. Usecase
+Usecase berisi bisnis logic aplikasi, mengatur aliran data ke dan dari model, dan mengarahkan data tersebut untuk diolah.
 
-    Set-Content -Path ENV -Value 'dev'
+## 4. Transport
+Transport digunakan untuk mengolah request sebelum masuk ke usecase dan mengolah response setelah kembali dari usecase.
 
-Note:
-1. For windows, do this command on the `Windows PowerShell` application. Or you can setting this environtment on Windows Environtment.
-2. For the env value:
-    - Development: `dev`
-    - Test: `test`
-    - Production: `prod`
+## 5. Routes
+Routes untuk mengolah endpoint, menerapkan middleware, dan menjalankan service.
 
-## Install / Sync Depencies
+## 6. Adapter
+Adapter berisikan fungsi-fungsi untuk membuat koneksi service ke database atau client lain.
 
-    go mod tidy
+# Helper
+Helper berisikan middleware, response template, fungsi crypto, logger, dll. Pengguna bisa langsung memanggil fungsi didalam helper jika diperlukan.
 
-## Run the app
-
-    go run main.go
-
-then you can go to open web application by: `http://localhost:[set up port]/`
-
-## Run the tests
-
-    go test ./... -v
-
-## Build the app
-
-    go build
-
-
-
-
-# REST API
-
-The REST API to the example app is described below. For this one, there is a swagger url that explain all the API for this microservices. The swagger path is: `[url]/swagger/index.html`. To open swagger, make sure that .env property properly (sync with current env do you use):
-
-## Development
-
-    DEV__SWAGGER__ALLOW=TRUE
-    DEV__SWAGGER__URL=[back end API URL]
-
-## Test
-    TEST__SWAGGER__ALLOW=TRUE
-    TEST__SWAGGER__URL=[back end API URL]
-
-## Production
-    PROD__SWAGGER__ALLOW=TRUE
-    PROD__SWAGGER__URL=[back end API URL]
+# References
+- https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html
