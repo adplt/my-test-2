@@ -2,3 +2,4 @@
 project
 .scannerwork
 project.*
+*.DS_Store
