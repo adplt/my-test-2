@@ -21,6 +21,7 @@ func (m *md) GetWeightById(c *gin.Context) {
 				configs.Throw(err)
 			}
 
+			c.Set("body", request)
 			c.Next()
 		},
 		Catch: func(e error) {
@@ -46,6 +47,11 @@ func (m *md) GetWeight(c *gin.Context) {
 				configs.Throw(err)
 			}
 
+			if request.Limit == 0 {
+				request.Limit = 10
+			}
+
+			c.Set("body", request)
 			c.Next()
 		},
 		Catch: func(e error) {
@@ -73,6 +79,7 @@ func (m *md) AddWeight(c *gin.Context) {
 				configs.Throw(err)
 			}
 
+			c.Set("body", request)
 			c.Next()
 		},
 		Catch: func(e error) {
@@ -101,6 +108,7 @@ func (m *md) UpdateWeight(c *gin.Context) {
 				configs.Throw(err)
 			}
 
+			c.Set("body", request)
 			c.Next()
 		},
 		Catch: func(e error) {

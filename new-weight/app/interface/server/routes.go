@@ -24,9 +24,9 @@ func setupRouter(transport *transport.Tp, middleware middlewares.Middleware, app
 		})
 	})
 
-	v1 := app.Group("/v1")
-	v1.GET("/:weightRecordId/", middleware.GetWeightById, transport.SampleTransport.GetWeightById)
+	v1 := app.Group("/v1/weights")
+	v1.GET("/:weightRecordId", middleware.GetWeightById, transport.SampleTransport.GetWeightById)
 	v1.GET("/", middleware.GetWeight, transport.SampleTransport.GetWeight)
 	v1.POST("/", middleware.AddWeight, transport.SampleTransport.AddWeight)
-	v1.PUT("/:weightRecordId/", middleware.UpdateWeight, transport.SampleTransport.UpdateWeight)
+	v1.PUT("/:weightRecordId", middleware.UpdateWeight, transport.SampleTransport.UpdateWeight)
 }

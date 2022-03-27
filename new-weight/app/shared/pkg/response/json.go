@@ -31,7 +31,7 @@ func (res JSON) JSON(c *gin.Context, data ...interface{}) {
 	if !res.Success && data != nil && data[0] != nil {
 		res.Results = data[0]
 	}
-	c.JSON(res.HTTPStatusCode, gin.H{})
+	c.JSON(res.HTTPStatusCode, res)
 }
 
 // Error godoc.

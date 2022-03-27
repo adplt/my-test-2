@@ -23,10 +23,7 @@ func NewSampleTransport(useCase sample.UseCase, serverResponse response.ServerRe
 }
 
 func (tp *sampleTransport) GetWeightById(c *gin.Context) {
-	var body structs.GetWeight
-
-	weightRecordID := c.Param("weightRecordId")
-	body.WeightRecordId = &weightRecordID
+	body := c.MustGet("body").(structs.GetWeight)
 
 	res, httpStatusCode, code, err := tp.sampleUC.GetWeightById(body)
 	if err != nil {
@@ -66,9 +63,6 @@ func (tp *sampleTransport) AddWeight(c *gin.Context) {
 
 func (tp *sampleTransport) UpdateWeight(c *gin.Context) {
 	body := c.MustGet("body").(structs.WeightData)
-
-	weightRecordID := c.Param("weightRecordId")
-	body.WeightRecordId = &weightRecordID
 
 	res, httpStatusCode, code, err := tp.sampleUC.UpdateWeight(body)
 	if err != nil {

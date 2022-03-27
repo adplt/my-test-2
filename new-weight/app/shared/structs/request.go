@@ -18,6 +18,6 @@ type WeightData struct {
 type GetWeight struct {
 	Date           string  `form:"date" json:"date,omitempty" swaggertype:"string" example:"2021-07-24"`
 	WeightRecordId *string `json:"weightRecordId,omitempty" swaggertype:"string" example:"0a7df903-6253-414f-9ff4-2a70bd7fdb04"`
-	Limit          int     `json:"limit,omitempty" swaggertype:"number" example:"10"`
-	Offset         int     `json:"offset,omitempty" swaggertype:"number" example:"0"`
+	Limit          int     `form:"limit,omitempty" json:"limit,omitempty" swaggertype:"number" example:"10"`
+	Offset         int     `form:"offset,omitempty" json:"offset,omitempty" swaggertype:"number" example:"0"`
 }

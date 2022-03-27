@@ -94,17 +94,10 @@ func (r serverResponse) ResponseWithCode(ctx *gin.Context, httpStatusCode int, s
 
 func (r serverResponse) basic(ctx *gin.Context, httpStatusCode int, status bool, code, problemOwner string, data interface{}) {
 	var msgID, msgEN string
-	row := ReadErrorDetailMessage(ctx, r.db, ReadErrorDetailMessageParams{
-		ErrorCode:    code,
-		ProblemOwner: problemOwner,
-	})
-	err := row.Scan(&msgID, &msgEN)
-	if err != nil || msgID == "" || msgEN == "" {
-		if status {
-			msgID, msgEN = "Berhasil", "Success"
-		} else {
-			msgID, msgEN = "Error pada system", "System error"
-		}
+	if status {
+		msgID, msgEN = "Berhasil", "Success"
+	} else {
+		msgID, msgEN = "Error pada system", "System error"
 	}
 
 	Basic(status, httpStatusCode, code, msgID+"\n"+msgEN, data).JSON(ctx)

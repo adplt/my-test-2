@@ -2,9 +2,10 @@ package database
 
 import (
 	"fmt"
-	"github.com/jinzhu/gorm"
 	"project-name/app/shared/config"
 	"time"
+
+	"github.com/jinzhu/gorm"
 )
 
 type MySQL struct {
@@ -22,7 +23,7 @@ func SetupMySQL() *MySQL {
 	}
 
 	// Enable Logger, show detailed log
-	// db.LogMode(true)
+	db.LogMode(true)
 
 	db.DB().SetConnMaxLifetime(5 * time.Minute)
 
