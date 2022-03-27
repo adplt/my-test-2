@@ -1,0 +1,108 @@
+def service_name        = "be-main-template"
+def service_version     = "v1.0.0"
+def url_repo            = "https://gitlab.mncbank.co.id/backend/${service_name}.git"
+def registry_auth       = "dockerRegistryAuth"
+def registry            = "docker.mncbank.co.id:5000"
+def kube_credential     = "kubeconfig"
+def kube_namespace      = "testing"
+def cluster_name        = "rancher-${env.GET_TRIGGER}"
+def unitTest_standard   = env.UNIT_TEST_STANDAR
+def gitUrl              = "https://gitlab.mncbank.co.id"
+def gitUrlAuth          = "https://${env.USER_GITLAB}:${env.TOKEN_GITLAB}@gitlab.mncbank.co.id"
+
+pipeline{
+    agent any
+    stages{
+        stage("Unit Test"){
+            when{
+                expression { env.GET_TRIGGER == "dev" }
+            }
+            steps{
+                script{
+                    def golang = tool name: 'go1.16.4', type: 'go'
+                    withEnv(["GOROOT=/usr/lib/golang", "PATH+GO=/usr/lib/golang/bin", "GOSUMDB=off"]) { 
+                        goEnv(lib_url: gitUrl, lib_url_auth: gitUrlAuth)
+
+                        // unitTest()
+                        try {
+                            unitTest()
+                        } catch (e) {
+                            echo "${e}"
+                        }
+
+                        def unitTestGetValue = sh(returnStdout: true, script: 'go tool cover -func=coverage.out | grep total | sed "s/[[:blank:]]*$//;s/.*[[:blank:]]//"')
+                        unitTest_score = "Your score is ${unitTestGetValue}"
+                        echo "${unitTest_score}"
+
+                        if (unitTestGetValue >= unitTest_standard){
+                            echo "Unit Test fulfill standar value with score ${unitTestGetValue}/${unitTest_standard}"
+                        } else {
+                            currentBuild.result = 'ABORTED'
+                            error("Sorry your unit test score not fulfill standard score ${unitTestGetValue}/${unitTest_standard}")
+                        }
+                    }
+                }   
+            }
+        }
+        stage('Building image') {
+            when{
+                expression { env.GET_TRIGGER == "dev" }
+            }
+            steps{
+                script {
+                    dockerBuild(registry: registry, service_name: service_name, service_version: service_version, user_gitlab: USER_GITLAB, token_gitlab: TOKEN_GITLAB)
+                }
+            }
+        }
+        stage('Push Image') {
+            when{
+                expression { env.GET_TRIGGER == "dev" }
+            }
+            steps{
+                script {
+                    docker.withRegistry( "https://${registry}", registry_auth ) {
+                        dockerPush(registry: registry, service_name: service_name, service_version: service_version)
+                    }
+                }
+            }
+        }
+        stage('Deployment') {
+            steps{
+                withKubeConfig(caCertificate: '', clusterName: cluster_name, contextName: cluster_name, credentialsId: kube_credential, namespace: kube_namespace, serverUrl: '') {
+                    sh "kubectl apply -f ./deployment.yaml -n ${kube_namespace}"
+                    sh "kubectl rollout restart deployment/${service_name} -n ${kube_namespace}"
+                }
+            }
+        }
+    }
+    post{
+        success{
+            echo "success"
+        }
+        failure{
+            echo "error"
+        }
+        aborted{
+            echo "error"
+        }
+    }
+}
+
+def unitTest() {
+    sh "go test ./... -covermode=count -coverprofile coverage.out"
+    sh "go tool cover -func=coverage.out"
+}
+
+def goEnv(Map args) {
+    sh "go env -w GOSUMDB=off"
+    sh "go env -w CGO_ENABLED=0"
+    sh "git config --global url.'${args.lib_url_auth}'.insteadOf '${args.lib_url}'"
+}
+
+def dockerBuild(Map args) {
+    sh "docker build -t ${args.registry}/${args.service_name}:${args.service_version} --build-arg USER_GITLAB=${args.user_gitlab} --build-arg TOKEN_GITLAB=${args.token_gitlab} ."
+}
+
+def dockerPush(Map args) {
+    sh "docker push ${args.registry}/${args.service_name}:${args.service_version}"
+}

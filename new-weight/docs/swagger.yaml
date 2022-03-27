@@ -1,0 +1,63 @@
+basePath: /project
+definitions:
+  models.GetScifByGCN:
+    properties:
+      gcn:
+        type: string
+    type: object
+  models.JSON:
+    properties:
+      message:
+        type: string
+      messagecode:
+        type: string
+      results:
+        type: object
+      success:
+        type: boolean
+    type: object
+info:
+  contact: {}
+  description: This is a services for get motion saving point.
+  title: BE Main Template
+  version: 0.0.1
+paths:
+  /:
+    get:
+      description: Request for get data
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.JSON'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.JSON'
+      summary: Request for get data
+    post:
+      consumes:
+      - application/json
+      description: Request for get info scif by gcn
+      parameters:
+      - description: get request from context middleware
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/models.GetScifByGCN'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.JSON'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.JSON'
+      summary: Request for get info scif by gcn
+swagger: "2.0"

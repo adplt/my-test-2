@@ -220,7 +220,7 @@ func TestGetWeight(t *testing.T) {
 			if err != nil {
 				configs.Throw(err)
 			}
-			weightJson, err := json.Marshal(weight)
+			_, err = json.Marshal(weight)
 			if len(weight) == 0 {
 				configs.Throw(errors.New("Response not found"))
 			}

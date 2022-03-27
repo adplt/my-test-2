@@ -1,0 +1,97 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is a services for get motion saving point.",
+        "title": "BE Main Template",
+        "contact": {},
+        "version": "0.0.1"
+    },
+    "basePath": "/project",
+    "paths": {
+        "/": {
+            "get": {
+                "description": "Request for get data",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Request for get data",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.JSON"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.JSON"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Request for get info scif by gcn",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Request for get info scif by gcn",
+                "parameters": [
+                    {
+                        "description": "get request from context middleware",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.GetScifByGCN"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.JSON"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.JSON"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.GetScifByGCN": {
+            "type": "object",
+            "properties": {
+                "gcn": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.JSON": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "messagecode": {
+                    "type": "string"
+                },
+                "results": {
+                    "type": "object"
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        }
+    }
+}
